@@ -1,18 +1,11 @@
 import mongoose from "mongoose";
 const schema = mongoose.Schema({
-    name: String,
+    hash: String,
     email: {
         type: String,
         required: true,
         unique: true
     },
-    password: String,
-    address: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    dob: String,
-}, { collection: 'users' });
+}, { collection: 'login' });
 
 export default schema;
