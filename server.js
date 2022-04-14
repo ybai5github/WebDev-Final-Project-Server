@@ -9,12 +9,17 @@ import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
 import usersDao from './users-dao.js';
 
+/* 
+mongoose.connect('mongodb://0.0.0.0:27017/webdevfinal'); */
 
-mongoose.connect('mongodb://0.0.0.0:27017/webdevfinal');
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+
+
 
 var db = mongoose.connection;
+
+/* process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; */
 
 /* console.log(db); */
 
@@ -30,7 +35,7 @@ app.use(cors());
 /* app.get('/hello', (req, res) => { res.send('Hello World!') })
 app.get('/', (req, res) => { res.send('Welcome to Full Stack Development!') })  */
 
-const database = {
+/* const database = {
     users: [
         {
             id: '134',
@@ -51,7 +56,7 @@ const database = {
             joined: new Date()
         }
     ]
-}
+} */
 
 app.get('/', (req, res) => {
     res.send(database.users);
@@ -133,6 +138,7 @@ bcrypt.compare("veggies", hash, function (err, res) {
     // res = false
 });
  */
+
 
 app.post('/register', async (req, res) => {
     const newUser = req.body;

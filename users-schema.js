@@ -13,6 +13,11 @@ const schema = mongoose.Schema({
         unique: true
     },
     dob: String,
+    account: String,
+    review: String,
+    likes: Number,
+    dislikes: Number,
+    
 }, { collection: 'users' });
 
 export default schema;
