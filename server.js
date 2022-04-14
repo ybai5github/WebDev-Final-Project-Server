@@ -7,19 +7,14 @@ import handleRegister from './controllers/register.js'
 import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
-import usersDao from './users-dao.js';
-
-/* 
-mongoose.connect('mongodb://0.0.0.0:27017/webdevfinal'); */
-
+import usersDao from './database/users/users-dao.js';
+import reviewsController from "./controllers/reviews-controller.js";
 
 mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
-
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 var db = mongoose.connection;
-
-/* process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; */
 
 /* console.log(db); */
 
@@ -31,36 +26,38 @@ var db = mongoose.connection;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
+// app.get('/detail', (req, res) => { res.send('Hello World!') })
 /* app.get('/hello', (req, res) => { res.send('Hello World!') })
 app.get('/', (req, res) => { res.send('Welcome to Full Stack Development!') })  */
 
-/* const database = {
-    users: [
-        {
-            id: '134',
-            name: 'sarah',
-            email: 'cookies',
-            password: 'tomato',
-            address: '123 street',
-            entry: 0,
-            joined: new Date()
-        },
-        {
-            id: '13131334',
-            name: 'sally',
-            email: 'oreo',
-            password: 'cookies',
-            address: '145 street',
-            entry: 0,
-            joined: new Date()
-        }
-    ]
-} */
+reviewsController(app);
 
-app.get('/', (req, res) => {
-    res.send(database.users);
-})
+// const database = {
+//     users: [
+//         {
+//             id: '134',
+//             name: 'sarah',
+//             email: 'cookies',
+//             password: 'tomato',
+//             address: '123 street',
+//             entry: 0,
+//             joined: new Date()
+//         },
+//         {
+//             id: '13131334',
+//             name: 'sally',
+//             email: 'oreo',
+//             password: 'cookies',
+//             address: '145 street',
+//             entry: 0,
+//             joined: new Date()
+//         }
+//     ]
+// }
+//
+// app.get('/', (req, res) => {
+//     res.send(database.users);
+// })
 
 /* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
 
@@ -138,7 +135,6 @@ bcrypt.compare("veggies", hash, function (err, res) {
     // res = false
 });
  */
-
 
 app.post('/register', async (req, res) => {
     const newUser = req.body;
