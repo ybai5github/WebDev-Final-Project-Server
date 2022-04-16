@@ -1,0 +1,47 @@
+export default [
+  { "username": "alice wang",
+    "type": "CUSTOMER",
+    "handle": "cmelie",
+    "profilePicture": "https://images.saymedia-content.com/.image/t_share/MTc5NjQ1ODEzMTgwNDA5ODE2/the-tragedy-of-eren-yeager-how-the-character-changes-throughout-attack-on-titan.png",
+    "bio": "Faculty, Software Engineer, AI, Space, and renewable enthusiast.Retuits and likes are not endorsements",
+    "email": "youtube.com/webdevtv",
+    "location": "Boston, MA",
+    "dob": "7/7/1968",
+    "dateJoined": "4/2009",
+    "_id": "123" },
+
+  { "username": "bob hepburn",
+    "type": "ADMIN",
+    "handle": "cmelie",
+    "profilePicture": "https://images.saymedia-content.com/.image/t_share/MTc5NjQ1ODEzMTgwNDA5ODE2/the-tragedy-of-eren-yeager-how-the-character-changes-throughout-attack-on-titan.png",
+    "bio": "Faculty, Software Engineer, AI, Space, and renewable enthusiast.Retuits and likes are not endorsements",
+    "email": "youtube.com/webdevtv",
+    "location": "Boston, MA",
+    "dob": "7/7/1968",
+    "dateJoined": "4/2009",
+    "_id": "234" },
+
+  { "username": "charlie newman",
+    "type": "SELLER",
+    "handle": "cmelie",
+    "profilePicture": "https://images.saymedia-content.com/.image/t_share/MTc5NjQ1ODEzMTgwNDA5ODE2/the-tragedy-of-eren-yeager-how-the-character-changes-throughout-attack-on-titan.png",
+    "bio": "Faculty, Software Engineer, AI, Space, and renewable enthusiast.Retuits and likes are not endorsements",
+    "email": "youtube.com/webdevtv",
+    "location": "Boston, MA",
+    "dob": "7/7/1968",
+    "dateJoined": "4/2009",
+    "_id": "345" },
+
+  {
+    "username": "Chiemelie Ezeokeke",
+    "type": "CUSTOMER",
+    "handle": "cmelie",
+    "profilePicture": "https://images.saymedia-content.com/.image/t_share/MTc5NjQ1ODEzMTgwNDA5ODE2/the-tragedy-of-eren-yeager-how-the-character-changes-throughout-attack-on-titan.png",
+    "bio": "Faculty, Software Engineer, AI, Space, and renewable enthusiast.Retuits and likes are not endorsements",
+    "email": "youtube.com/webdevtv",
+    "location": "Boston, MA",
+    "dob": "7/7/1968",
+    "dateJoined": "4/2009",
+    "_id": "768"
+  }
+];
