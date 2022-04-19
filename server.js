@@ -8,13 +8,17 @@ import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
+import usersModel from './database/users/users-model.js';
 import reviewsController from "./controllers/reviews-controller.js";
+
 
 mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 var db = mongoose.connection;
+
+var id = mongoose.Types.ObjectId();
 
 /* console.log(db); */
 
@@ -61,7 +65,7 @@ reviewsController(app);
 
 /* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
 
-app.get('/profile/:id', (req, res) => { handleProfile(req, res, db) });
+app.get('/profile/:_id', (req, res) => { handleProfile(req, res, db) });
 
 app.post('/signin', async (req, res) => {
     const login = req.body;
@@ -135,6 +139,69 @@ bcrypt.compare("veggies", hash, function (err, res) {
     // res = false
 });
  */
+
+app.post('/order', async (req, res) => {
+
+    /*  console.log(req.params._id) */
+    const newOrder = req.body;
+    console.log('new order', newOrder);
+    /*  mongoose.Types.ObjectId("625776702f0ac5806ef38643")  */
+
+    var doc = { cartItems: newOrder.cartItems };
+
+    console.log('doc', doc);
+    var query = { cartItems: newOrder.cartItems }
+
+    const entries = Object.entries(newOrder.cartItems);
+    var merged = [].concat.apply([], entries);
+    console.log('merged array', merged);
+
+    console.log('enties', entries);
+    if (db.collection('users').find(query)) {
+
+        db.collection('users').updateOne({ "email": "Customer1@gmail.com" }, { $push: { "cartItems": merged } })
+        console.log('found');
+
+    } else {
+        db.collection('users').updateOne({ "email": "admin@gmail.com" }, { $set: { "cartItems": merged } })
+        console.log('not found');
+    }
+
+    /*  db.collection('users').updateOne({ "email": "admin@gmail.com"}, { $set: { "cartItems": doc } }, function (error, response) {
+         if (error) {
+             console.log('Error occurred while inserting', error);
+             return;
+         } else {
+             console.log('inserted record', response);
+         }
+ 
+     })
+  */
+
+    /* db.collection('users').insertOne(doc, function (error, response) {
+        if (error) {
+            console.log('Error occurred while inserting', error);
+            return;
+        } else {
+            console.log('inserted record');
+        }
+    }) */
+    res.json(newOrder.cartItems);
+    console.log('new order cartItems', newOrder.cartItems);
+})
+
+app.get('/cartitems', async (req, res) => {
+    usersModel.find(function (err, usersModels) {
+        if (err) return console.error(err);
+        console.log("usersmodel", usersModels);
+        var email = "admin@gmail.com"
+        var merged = [].concat.apply([], usersModels[2].cartItems);
+        console.log('merged array', merged);
+        /* console.log(usersModels[0].cartItems); */
+        res.json(merged);
+    })
+})
+
 
 app.post('/register', async (req, res) => {
     const newUser = req.body;
