@@ -9,6 +9,8 @@ import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
+import usersModel from "./database/users/users-model.js";
+
 
 mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
@@ -32,34 +34,53 @@ app.get('/', (req, res) => { res.send('Welcome to Full Stack Development!') })  
 
 reviewsController(app);
 
-// const database = {
-//     users: [
-//         {
-//             id: '134',
-//             name: 'sarah',
-//             email: 'cookies',
-//             password: 'tomato',
-//             address: '123 street',
-//             entry: 0,
-//             joined: new Date()
-//         },
-//         {
-//             id: '13131334',
-//             name: 'sally',
-//             email: 'oreo',
-//             password: 'cookies',
-//             address: '145 street',
-//             entry: 0,
-//             joined: new Date()
-//         }
-//     ]
-// }
+
+
 //
-// app.get('/', (req, res) => {
-//     res.send(database.users);
+// app.get('/review', async (req, res) => {
+//
+//     usersModel.find(function (err, usersModels) {
+//
+//         if (err) return console.error(err);
+//
+//         console.log("usersmodel", usersModels);
+//
+//         /* console.log(usersModels[0].cartItems); */
+//
+//         res.json(usersModels);
+//         console.log(usersModels[1].drinkID);
+//
+//     })
+//
+// })
+// app.get('/detail', async (req, res) => {
+//
+//
+//
+//     // var query = { id: 11000}
+//
+//     db.collection('reviews').find('11000').toArray(function (err, result) {
+//
+//         if (err) throw err;
+//
+//         console.log('result', result);
+//
+//         /* console.log('result [0]. cartItems', result[0].name); */
+//
+//         var merged = [].concat.apply([], result[0].cartItems);
+//
+//         console.log('merged array', merged);
+//
+//         /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
+//
+//         res.json(merged);
+//
+//     })
+//
 // })
 
-/* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
+
+
 
 app.get('/profile/:id', (req, res) => { handleProfile(req, res, db) });
 
