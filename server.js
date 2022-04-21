@@ -286,9 +286,9 @@ db.transaction(trx => {
 })
     .catch(err => res.status(400).json('unable to register')) */
 
-app.listen(4000, () => {
-    console.log('app is running on 4000')
-})
+// app.listen(4000, () => {
+//     console.log('app is running on 4000')
+// })
 
 /*
 /signin -> post = success/fail
