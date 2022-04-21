@@ -128,7 +128,6 @@ app.get('/cartitems', async (req, res) => {
          console.log(usersModels[0].cartItems);
          res.json(merged);
      } ; */
-
     if (globalEmail == "") {
         res.status(400).json('please purchase the items before viewing the history');
     } else {
@@ -136,12 +135,15 @@ app.get('/cartitems', async (req, res) => {
         db.collection('users').find(query).toArray(function (err, result) {
             if (err) throw err;
             console.log('result', result);
-            /* console.log('result [0]. cartItems', result[0].name); */
-            var merged = [].concat.apply([], result[0].cartItems);
-            console.log('merged array', merged);
-            /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
-
-            res.json(merged);
+            if (result === undefined || result.length == 0) {
+                res.status(400).json('please purchase the items before viewing the history');
+            } else {
+                /* console.log('result [0]. cartItems', result[0].name); */
+                var merged = [].concat.apply([], result[0].cartItems);
+                console.log('merged array', merged);
+                /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
+                res.json(merged);
+            }
         })
     }
 })
