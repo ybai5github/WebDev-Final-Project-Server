@@ -130,6 +130,7 @@ app.get('/cartitems', async (req, res) => {
      } ; */
     if (globalEmail == "") {
         res.status(400).json('please purchase the items before viewing the history');
+        console.log("error viewing the history");
     } else {
         var query = { email: globalEmail }
         db.collection('users').find(query).toArray(function (err, result) {
@@ -137,6 +138,7 @@ app.get('/cartitems', async (req, res) => {
             console.log('result', result);
             if (result === undefined || result.length == 0) {
                 res.status(400).json('please purchase the items before viewing the history');
+                console.log("error viewing the history");
             } else {
                 /* console.log('result [0]. cartItems', result[0].name); */
                 var merged = [].concat.apply([], result[0].cartItems);
