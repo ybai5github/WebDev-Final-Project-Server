@@ -5,6 +5,7 @@ import cors from 'cors';
 import handleRegister from './controllers/register.js'
 import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
+import globalhandleProfile from "./controllers/globalprof.js";
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
@@ -184,6 +185,40 @@ app.get('/cartitems', async (req, res) => {
     }
 })
 
+app.post('/editProfile', async(req,res) =>{
+    const newprofile = req.body;
+    const updateuser = await usersDao.findUser(req.body);
+    if(updateuser){
+        updateuser.name = req.body.name || updateuser.name;
+        updateuser.email = req.body.email || updateuser.email;
+        updateuser.address = req.body.address|| updateuser.address;
+        updateuser.dob = req.body.dob|| updateuser.dob;
+
+        const updatedUser = await updateuser;
+
+        res.json({
+            name:updatedUser.name,
+            email:updatedUser.email,
+            address:updatedUser.address,
+            dob:updatedUser.dob,
+        })
+    }else{
+        res.status(400).json('incorrect form submission - message from the server');
+    }
+
+    console.log('new profile', newprofile);
+    console.log("update user", updateuser);
+    //logic to replace information
+    //response to json
+})
+
+app.post('/profile/bob', async (req, res) => {
+    globalhandleProfile(req, res, db)
+    const profilebob = req.body;
+
+    console.log("bob", profilebob);
+})
+
 
 app.post('/register', async (req, res) => {
     const newUser = req.body;
@@ -203,6 +238,8 @@ app.post('/register', async (req, res) => {
             console.log('inserted record');
         }
     });
+
+
 
     console.log('new user email', newUser.email);
     console.log('new user', newUser);
