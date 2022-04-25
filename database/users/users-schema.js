@@ -12,6 +12,7 @@ const schema = mongoose.Schema({
         required: true,
         unique: true
     },
+    account: String,
     dob: String,
     cartItems : { type : Array , "default" : [] },
 }, { collection: 'users' });
