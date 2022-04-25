@@ -148,42 +148,6 @@ app.get('/cartitems', async (req, res) => {
     }
 })
 
-// select cart items by email returns hisotry of items ordered by user
-app.get('/cartitems', async (req, res) => {
-    console.log('global email', globalEmail);
-    /*   const cartEmail = globalEmail;
-      console.log('cart email', cartEmail); */
-
-    /*  usersModel.find({email: cartEmail}, {"cartItems": 1}), function(err, usersModels){
-         if (err) return console.error(err);
-         console.log("usersmodel", usersModels);
-         var merged = [].concat.apply([], usersModels[1].cartItems);
-         console.log('merged array', merged);
-         console.log(usersModels[0].cartItems);
-         res.json(merged);
-     } ; */
-    if (globalEmail == "") {
-        res.status(400).json('please purchase the items before viewing the history');
-        console.log("error viewing the history");
-    } else {
-        var query = { email: globalEmail }
-        db.collection('users').find(query).toArray(function (err, result) {
-            if (err) throw err;
-            console.log('result', result);
-            if (result === undefined || result.length == 0) {
-                res.status(400).json('please purchase the items before viewing the history');
-                console.log("error viewing the history");
-            } else {
-                /* console.log('result [0]. cartItems', result[0].name); */
-                var merged = [].concat.apply([], result[0].cartItems);
-                console.log('merged array', merged);
-                /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
-                res.json(merged);
-            }
-        })
-    }
-})
-
 
 app.post('/register', async (req, res) => {
     const newUser = req.body;
