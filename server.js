@@ -144,10 +144,31 @@ app.get('/cartitems', async (req, res) => {
                 var merged = [].concat.apply([], result[0].cartItems);
                 console.log('merged array', merged);
                 /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
+                
                 res.json(merged);
             }
         })
     }
+    globalEmail = "";
+})
+
+app.get('/admin', async (req, res) => {
+    db.collection('users').find({}, { cartItems: 1 }).toArray(function (err, result) {
+        if (err) throw err;
+        console.log('result', result.length);
+
+        const combined = [];
+        for (var i = 0; i < result.length; i++) {
+            var merged = [].concat.apply([], result[i].cartItems);
+          
+            combined.push(merged);
+            console.log('merged array', merged.length);
+            console.log('combined', combined)
+        }
+        console.log([].concat.apply([],combined));
+        res.json([].concat.apply([],combined));
+    })
+
 })
 
 app.post('/register', async (req, res) => {
