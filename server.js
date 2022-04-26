@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
 import usersModel from "./database/users/users-model.js";
+import profileController from "./controllers/profile-controller.js";
+
 
 mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
@@ -31,6 +33,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 reviewsController(app);
+profileController(app);
 
 /* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
 
@@ -185,32 +188,77 @@ app.get('/cartitems', async (req, res) => {
     }
 })
 
-app.post('/editProfile', async(req,res) =>{
-    const newprofile = req.body;
-    const updateuser = await usersDao.findUser(req.body);
-    if(updateuser){
-        updateuser.name = req.body.name || updateuser.name;
-        updateuser.email = req.body.email || updateuser.email;
-        updateuser.address = req.body.address|| updateuser.address;
-        updateuser.dob = req.body.dob|| updateuser.dob;
+// app.post('/editProfile',  function(req, res, next){
+//
+//     User.findById(req.user.id, function (err, user) {
+//
+//         if (!user) {
+//             req.flash('error', 'No account found');
+//             return res.redirect('/edit');
+//         }
+//
+//         // good idea to trim
+//         const email = req.body.email.trim();
+//         const name = req.body.name.trim();
+//         const address = req.body.address.trim();
+//         const dob = req.body.dob.trim();
+//
+//         // validate
+//         if (!email || !name || !address || !dob) { // simplified: '' is a
+//             req.flash('error', 'One or more fields are empty');
+//             return res.redirect('/edit'); // modified
+//         }
+//
+//         // no need for else since you are returning early ^
+//         user.email = email;
+//         user.name = name;
+//         user.address = address;
+//         user.dob = dob;
+//
+//         // don't forget to save!
+//         user.save(function (err) {
+//
+//             res.redirect('/profile/');
+//         });
+//     });
+// });
 
-        const updatedUser = await updateuser;
-
-        res.json({
-            name:updatedUser.name,
-            email:updatedUser.email,
-            address:updatedUser.address,
-            dob:updatedUser.dob,
-        })
-    }else{
-        res.status(400).json('incorrect form submission - message from the server');
-    }
-
-    console.log('new profile', newprofile);
-    console.log("update user", updateuser);
-    //logic to replace information
-    //response to json
-})
+// app.put('/editProfile/:id', async(req,res) =>{
+//         const condition = {_id: req.params.id};
+//         usersModel.updateOne(condition,req.body).then(doc => {
+//             if(!doc){return res.status(404).end;}
+//             return res.status(404).json(doc);
+//         }).catch(err => next(err));
+//
+//     // const newprofile = req.body;
+//     // console.log('new profile', newprofile);
+//     // const updateuser = await usersDao.findUser(req.body);
+//     // console.log("update user", updateuser);
+//     // updateuser.save = async function (err) {
+//     //     res.redirect('/profile/');
+//     // }
+//     // if(updateuser){
+//     //     updateuser.name = req.body.name || updateuser.name;
+//     //     updateuser.email = req.body.email || updateuser.email;
+//     //     updateuser.address = req.body.address|| updateuser.address;
+//     //     updateuser.dob = req.body.dob|| updateuser.dob;
+//     //
+//     //     const updatedUser = await updateuser.save();
+//     //
+//     //     res.json({
+//     //         // name:updatedUser.name,
+//     //         // email:updatedUser.email,
+//     //         // address:updatedUser.address,
+//     //         // dob:updatedUser.dob,
+//     //     })
+//     // }else{
+//     //     res.status(400).json('incorrect form submission - message from the server');
+//     // }
+//
+//
+//     //logic to replace information
+//     //response to json
+// })
 
 app.post('/profile/bob', async (req, res) => {
     globalhandleProfile(req, res, db)
