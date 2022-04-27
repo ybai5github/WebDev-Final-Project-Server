@@ -2,13 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt-nodejs';
 import cors from 'cors';
-import handleRegister from './controllers/register.js'
-import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
-import res from 'express/lib/response';
 
 
 /* mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'); */
@@ -16,6 +13,7 @@ import res from 'express/lib/response';
 
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
     || 'mongodb://localhost:27017/webdevfinal'
+
 mongoose.connect(CONNECTION_STRING);
 
 
@@ -209,7 +207,9 @@ app.post('/register', async (req, res) => {
 
 })
 
-app.listen(process.env.PORT || 4000);
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`app is rnning on port ${process.env.PORT}`)
+})
 
 /* var date = new Date();
 var components = [
