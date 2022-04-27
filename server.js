@@ -8,9 +8,16 @@ import handleProfile from './controllers/profile.js';
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
+import res from 'express/lib/response';
 
 
-mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+/* mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'); */
+
+
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
+    || 'mongodb://localhost:27017/webdevfinal'
+mongoose.connect(CONNECTION_STRING);
+
 
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
@@ -32,6 +39,8 @@ app.use(cors());
 reviewsController(app);
 
 /* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
+
+app.get('/', (req,res) => {res.send('it is working')})
 
 app.get('/profile/:_id', (req, res) => { handleProfile(req, res, db) });
 
@@ -200,9 +209,7 @@ app.post('/register', async (req, res) => {
 
 })
 
-app.listen(4000, () => {
-    console.log('app is running on 4000')
-})
+app.listen(process.env.PORT || 4000);
 
 /* var date = new Date();
 var components = [
