@@ -7,6 +7,7 @@ import reviewsController from "./controllers/reviews-controller.js";
 import handleSignIn from './controllers/signin.js';
 import handleRegister from './controllers/register.js';
 import handleAdmin from './controllers/admin.js';
+import profileController from "./controllers/profile-controller.js";
 
 /* mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'); */
 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 reviewsController(app);
+profileController(app);
 
 app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) });
 
