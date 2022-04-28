@@ -5,10 +5,13 @@ import cors from 'cors';
 import handleRegister from './controllers/register.js'
 import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
+import globalhandleProfile from "./controllers/globalprof.js";
 import mongoose from "mongoose";
 import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
 import usersModel from "./database/users/users-model.js";
+import profileController from "./controllers/profile-controller.js";
+
 
 mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
@@ -30,6 +33,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 reviewsController(app);
+profileController(app);
 
 /* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
 
@@ -167,6 +171,8 @@ app.post('/register', async (req, res) => {
             console.log('inserted record');
         }
     });
+
+
 
     console.log('new user email', newUser.email);
     console.log('new user', newUser);
