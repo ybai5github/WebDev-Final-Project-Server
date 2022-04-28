@@ -12,8 +12,9 @@ const updatePerson = async (req, res) => {
   const userdIdToUpdate = req.params.id;
   const updatedUser = req.body;
   const status = await profileDAO.updateUser(userdIdToUpdate,updatedUser);
-  res.send(status);
-  res.sendStatus(200);
+ /*  console.log('status',status); */
+  /* res.send(status); */
+/*   res.sendStatus(200); */
   res.json(status);
 }
 
