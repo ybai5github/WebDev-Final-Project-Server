@@ -1,8 +1,4 @@
 import * as reviewDao from '../database/reviews/reviews-dao.js';
-import {response} from "express";
-
-
-
 
 const findAllReviews = async (req, res) => {
     // const drinkID = req.params.sid;
