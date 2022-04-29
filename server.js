@@ -4,11 +4,8 @@ import bcrypt from 'bcrypt-nodejs';
 import cors from 'cors';
 import handleRegister from './controllers/register.js'
 import handleSignIn from './controllers/signin.js';
-import handleProfile from './controllers/profile.js';
-import globalhandleProfile from "./controllers/globalprof.js";
 import mongoose from "mongoose";
 import reviewsController from "./controllers/reviews-controller.js";
-import usersModel from "./database/users/users-model.js";
 import profileController from "./controllers/profile-controller.js";
 
 /* mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'); */
