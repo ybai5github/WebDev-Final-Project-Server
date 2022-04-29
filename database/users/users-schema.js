@@ -15,6 +15,7 @@ const schema = mongoose.Schema({
         required: true,
         unique: true
     },
+    account: String,
     dob: String,
     account: String,
     cartItems : { type : Array , "default" : [] },

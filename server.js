@@ -7,26 +7,18 @@ import handleSignIn from './controllers/signin.js';
 import handleProfile from './controllers/profile.js';
 import globalhandleProfile from "./controllers/globalprof.js";
 import mongoose from "mongoose";
-import usersDao from './database/users/users-dao.js';
 import reviewsController from "./controllers/reviews-controller.js";
 import usersModel from "./database/users/users-model.js";
 import profileController from "./controllers/profile-controller.js";
 
+/* mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'); */
 
-mongoose.connect('mongodb+srv://felixyn:drinks@cluster0.mwd5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
+    || 'mongodb://localhost:27017/webdevfinal'
+mongoose.connect(CONNECTION_STRING);
 
 var db = mongoose.connection;
-
-var id = mongoose.Types.ObjectId();
-
-/* console.log(db); */
-
-/* db.select('*').from('users').then(data => {
-    console.log(data);
-});
- */
 
 const app = express();
 app.use(bodyParser.json());
@@ -35,53 +27,23 @@ app.use(cors());
 reviewsController(app);
 profileController(app);
 
-/* app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) }); */
+app.post('/signin', (req, res) => { handleSignIn(req, res, db, bcrypt) });
 
-app.get('/profile/:_id', (req, res) => { handleProfile(req, res, db) });
+app.get('/', (req, res) => { res.send('it is working') })
 
-app.post('/signin', async (req, res) => {
-    const login = req.body;
-    console.log(login);
-    if (!login.email || !login.password) {
-        return res.status(400).json('incorrect form submission');
-    }
+app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) });
 
-    var query = { email: login.email }
-    db.collection('login').find(query).toArray(function (err, result) {
-        if (err) throw error;
-        if (result.length == 0) {
-            res.status(400).json('wrong credentials');
-        } else {
-            console.log(result);
-            console.log(result[0].hash);
-            const isValid = bcrypt.compareSync(req.body.password, result[0].hash);
-            console.log(isValid);
-            if (isValid) {
-                var query = { email: login.email }
-                db.collection('users').find(query).toArray(function (err, result) {
-                    if (err) throw err;
-                    console.log('result', result);
-                    console.log('result [0]', result[0]);
-                    res.json(result[0])
-                })
-            } else {
-                res.status(400).json('wrong credentials')
-            }
-        }
-    })
-
-})
-
+app.get('/admin', async (req, res) => { handleAdmin(req, res, db) });
 
 var globalEmail = "";
 
+console.log('global email', globalEmail);
+
 app.post('/order', async (req, res) => {
-    /*  console.log(req.params._id) */
+
     const newOrder = req.body;
-    console.log('new order', newOrder);
-    /*  mongoose.Types.ObjectId("625776702f0ac5806ef38643")  */
-    /* var doc = { cartItems: newOrder.cartItems };
-    console.log('doc', doc); */
+    /* console.log('new order', newOrder); */
+
     var query = { cartItems: newOrder.cartItems }
 
     const entries = Object.entries(newOrder.cartItems);
@@ -91,7 +53,7 @@ app.post('/order', async (req, res) => {
     console.log("email", newOrder.email);
     globalEmail = newOrder.email;
 
-    console.log('enties', entries);
+   /*  console.log('enties', entries); */
     if (db.collection('users').find(query)) {
 
         db.collection('users').updateOne({ "email": newOrder.email }, { $push: { "cartItems": merged } })
@@ -113,27 +75,15 @@ app.post('/order', async (req, res) => {
      })
   */
     res.json(newOrder.cartItems);
-    /* console.log('new order cartItems', newOrder.cartItems); */
 })
-
-console.log('globala email', globalEmail);
 
 // select cart items by email returns hisotry of items ordered by user
 app.get('/cartitems', async (req, res) => {
     console.log('global email', globalEmail);
-    /*   const cartEmail = globalEmail;
-      console.log('cart email', cartEmail); */
 
-    /*  usersModel.find({email: cartEmail}, {"cartItems": 1}), function(err, usersModels){
-         if (err) return console.error(err);
-         console.log("usersmodel", usersModels);
-         var merged = [].concat.apply([], usersModels[1].cartItems);
-         console.log('merged array', merged);
-         console.log(usersModels[0].cartItems);
-         res.json(merged);
-     } ; */
     if (globalEmail == "") {
         res.status(400).json('please purchase the items before viewing the history');
+        console.log("error viewing the history");
     } else {
         var query = { email: globalEmail }
         db.collection('users').find(query).toArray(function (err, result) {
@@ -141,15 +91,18 @@ app.get('/cartitems', async (req, res) => {
             console.log('result', result);
             if (result === undefined || result.length == 0) {
                 res.status(400).json('please purchase the items before viewing the history');
+                console.log("error viewing the history");
             } else {
                 /* console.log('result [0]. cartItems', result[0].name); */
                 var merged = [].concat.apply([], result[0].cartItems);
                 console.log('merged array', merged);
                 /* console.log('result [0]. cartItems', result[0].cartItems[0]); */
+
                 res.json(merged);
             }
         })
     }
+    globalEmail = "";
 })
 
 
